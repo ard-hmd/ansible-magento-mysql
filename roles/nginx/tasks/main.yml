@@ -40,3 +40,5 @@
     - { regexp: 'max_execution_time', line: 'max_execution_time = 3600'}
     - { regexp: 'memory_limit', line: 'memory_limit  = 512M'}
     - { regexp: 'upload_max_filesize', line: 'upload_max_filesize = 128M'}
+  notify:
+    - Restart nginx

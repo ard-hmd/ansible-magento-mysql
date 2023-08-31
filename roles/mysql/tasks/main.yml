@@ -1,1 +1,26 @@
 ---
+- name: Install mysql-server
+  ansible.builtin.apt:
+    name: mysql-server
+    update_cache: yes
+    cache_valid_time: 86400
+    state: present
+
+- name: Enable service mysql-server
+  ansible.builtin.systemd:
+    name: mysql-server
+    enabled: true
+    state: started
+
+- name: Create a new database
+  community.mysql.mysql_db:
+    name: magentodb
+    state: present
+    login_unix_socket: /run/mysqld/mysqld.sock
+
+- name: Create database user with all database privileges
+  mysql_user:
+    name: magentouser
+    password: MyPassword
+    priv: "*.*:ALL"
+    state: present
