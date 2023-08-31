@@ -4,4 +4,5 @@
   roles:
     # - nginx
     # - mysql
-    - elasticsearch
+    # - elasticsearch
+    - composer

@@ -1,2 +1,7 @@
 ---
 # tasks file for composer
+- name: Install composer
+  shell: |
+    curl -sS https://getcomposer.org/installer | php
+    mv composer.phar /usr/local/bin/composer
+    chmod +x /usr/local/bin/composer
