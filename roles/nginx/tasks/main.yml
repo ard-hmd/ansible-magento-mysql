@@ -42,3 +42,10 @@
     - { regexp: 'upload_max_filesize', line: 'upload_max_filesize = 128M'}
   notify:
     - Restart nginx
+
+- name: Create magento configuration
+  ansible.builtin.template:
+    src: templates/magento2.conf.j2
+    dest: /etc/nginx/conf.d/magento2.conf
+  notify:
+    - Restart nginx

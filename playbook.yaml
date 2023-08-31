@@ -5,4 +5,5 @@
     # - nginx
     # - mysql
     # - elasticsearch
-    - composer
+    # - composer
+    - magento
