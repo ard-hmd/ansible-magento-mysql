@@ -8,9 +8,16 @@
 
 - name: Enable service mysql-server
   ansible.builtin.systemd:
-    name: mysql-server
+    name: mysql
     enabled: true
     state: started
+
+- name: Installation des dépendances
+  apt:
+    pkg: ["php-mysql", "python3-pymysql"]
+    update_cache: yes
+    cache_valid_time: 86400
+    state: present
 
 - name: Create a new database
   community.mysql.mysql_db:
@@ -24,3 +31,4 @@
     password: MyPassword
     priv: "*.*:ALL"
     state: present
+    login_unix_socket: /var/run/mysqld/mysqld.sock
