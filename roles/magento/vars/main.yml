@@ -1,2 +1,22 @@
 ---
 # vars file for magento
+magento_composer_key: be483e6a3c2c1558ee6aa660c33785db
+magento_composer_secret: a764930458246dd5702d3dfa8ef8a555
+magento_repo_url: https://repo.magento.com/
+magento_project_version: magento/project-community-edition=2.4.6
+magento_install_dir: /var/www/magento2
+magento_file_group: www-data
+magento_base_url: http://15.236.18.167
+magento_db_host: localhost
+magento_db_name: magentodb
+magento_db_user: magentouser
+magento_db_password: MyPassword
+magento_admin_firstname: Admin
+magento_admin_lastname: User
+magento_admin_email: admin@your-domain.com
+magento_admin_user: admin
+magento_admin_password: admin123
+magento_language: en_US
+magento_currency: USD
+magento_timezone: America/Chicago
+magento_use_rewrites: 1

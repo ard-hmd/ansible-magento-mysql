@@ -1,24 +1,23 @@
----
 - name: Download Composer Installer
   get_url:
-    url: https://getcomposer.org/installer
-    dest: /tmp/composer-installer
-    mode: 0755
+    url: "{{ composer_installer_url }}"
+    dest: "{{ composer_installer_dest }}"
+    mode: "{{ composer_installer_mode }}"
 
 - name: Install Composer using PHP
-  shell: php composer-installer
+  shell: php {{ composer_installer_filename }}
   args:
-    chdir: /tmp/
+    chdir: "{{ composer_installer_chdir }}"
 
 - name: Move Composer File to /user/local/bin
-  shell: mv composer.phar /usr/local/bin/composer
+  shell: mv {{ composer_installer_filename }} {{ composer_bin_location }}
   args:
-    chdir: /tmp/
+    chdir: "{{ composer_installer_chdir }}"
 
 - name: Create Symbolic Link
   file:
-    src: /usr/local/bin/composer
-    dest: /usr/bin/composer
-    owner: root
-    group: root
+    src: "{{ composer_bin_location }}"
+    dest: "{{ composer_symlink_location }}"
+    owner: "{{ composer_symlink_owner }}"
+    group: "{{ composer_symlink_group }}"
     state: link

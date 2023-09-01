@@ -2,8 +2,8 @@
 - hosts: all
   become: yes
   roles:
-    # - nginx
+    - nginx
     # - mysql
     # - elasticsearch
     # - composer
-    - magento
+    # - magento

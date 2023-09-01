@@ -1,34 +1,33 @@
----
 - name: Install mysql-server
   ansible.builtin.apt:
-    name: mysql-server
+    name: "{{ mysql_server_package }}"
     update_cache: yes
-    cache_valid_time: 86400
+    cache_valid_time: "{{ cache_valid_time }}"
     state: present
 
 - name: Enable service mysql-server
   ansible.builtin.systemd:
-    name: mysql
+    name: "{{ mysql_service_name }}"
     enabled: true
     state: started
 
 - name: Installation des dépendances
   apt:
-    pkg: ["php-mysql", "python3-pymysql"]
+    pkg: "{{ mysql_dependencies }}"
     update_cache: yes
-    cache_valid_time: 86400
+    cache_valid_time: "{{ cache_valid_time }}"
     state: present
 
 - name: Create a new database
   community.mysql.mysql_db:
-    name: magentodb
+    name: "{{ mysql_db_name }}"
     state: present
-    login_unix_socket: /run/mysqld/mysqld.sock
+    login_unix_socket: "{{ mysql_unix_socket_path }}"
 
 - name: Create database user with all database privileges
   mysql_user:
-    name: magentouser
-    password: MyPassword
-    priv: "*.*:ALL"
+    name: "{{ mysql_user_name }}"
+    password: "{{ mysql_user_password }}"
+    priv: "{{ mysql_user_privileges }}"
     state: present
-    login_unix_socket: /var/run/mysqld/mysqld.sock
+    login_unix_socket: "{{ mysql_unix_socket_path }}"

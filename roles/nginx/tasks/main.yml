@@ -1,51 +1,35 @@
----
 - name: Install nginx
   ansible.builtin.apt:
-    name: nginx
+    name: "{{ nginx_package }}"
     update_cache: yes
-    cache_valid_time: 86400
+    cache_valid_time: "{{ cache_valid_time }}"
     state: present
 
 - name: Enable service nginx
   ansible.builtin.systemd:
-    name: nginx
+    name: "{{ nginx_service_name }}"
     enabled: true
     state: started
 
 - name: Install required PHP packages
   apt:
-    name: 
-      - php 
-      - php-dev
-      - php-fpm
-      - php-bcmath
-      - php-intl
-      - php-soap
-      - php-zip
-      - php-curl
-      - php-mbstring
-      - php-mysql
-      - php-gd
-      - php-xml
+    name: "{{ php_packages }}"
     update_cache: yes
-    cache_valid_time: 86400
+    cache_valid_time: "{{ cache_valid_time }}"
     state: present
 
 - name: Update PHP configuration
   ansible.builtin.lineinfile:
-    path: /etc/php/8.1/cli/php.ini
+    path: "{{ php_config_path }}"
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
-  with_items:
-    - { regexp: 'max_execution_time', line: 'max_execution_time = 3600'}
-    - { regexp: 'memory_limit', line: 'memory_limit  = 512M'}
-    - { regexp: 'upload_max_filesize', line: 'upload_max_filesize = 128M'}
+  with_items: "{{ php_config_updates }}"
   notify:
     - Restart nginx
 
 - name: Create magento configuration
   ansible.builtin.template:
-    src: templates/magento2.conf.j2
-    dest: /etc/nginx/conf.d/magento2.conf
+    src: "{{ magento_template_src }}"
+    dest: "{{ magento_config_dest }}"
   notify:
     - Restart nginx

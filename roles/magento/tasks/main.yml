@@ -1,44 +1,42 @@
----
 # tasks file for magento
 - name: Set Magento Access Keys for Composer
-  shell: echo -e 'yes\n' |composer global config http-basic.repo.magento.com be483e6a3c2c1558ee6aa660c33785db a764930458246dd5702d3dfa8ef8a555
+  shell: echo -e 'yes\n' |composer global config http-basic.repo.magento.com "{{ magento_composer_key }}" "{{ magento_composer_secret }}"
 
 - name: Create the Magento Open Source Project
-  shell: echo -e 'yes\n' |composer create-project --repository=https://repo.magento.com/ magento/project-community-edition=2.4.6 /var/www/magento2
+  shell: echo -e 'yes\n' |composer create-project --repository="{{ magento_repo_url }}" "{{ magento_project_version }}" "{{ magento_install_dir }}"
 
 - name: Set Files Permissions to g+w
   shell: find var generated vendor pub/static pub/media app/etc -type f -exec chmod g+w {} \;
   args:
-    chdir: /var/www/magento2
+    chdir: "{{ magento_install_dir }}"
 
 - name: Set Directories Permissions to g+ws
   shell: find var generated vendor pub/static pub/media app/etc -type d -exec chmod g+ws {} \;
   args:
-    chdir: /var/www/magento2
+    chdir: "{{ magento_install_dir }}"
 
 - name: Set Files and Directories Group User
   file:
-    dest: /var/www/magento2
-    group: www-data
+    dest: "{{ magento_install_dir }}"
+    group: "{{ magento_file_group }}"
     recurse: yes
 
 - name: Install Magento
   shell: |
     bin/magento setup:install \
-      --base-url=http://15.236.18.167 \
-      --db-host=localhost \
-      --db-name=magentodb \
-      --db-user=magentouser \
-      --db-password=MyPassword \
-      --admin-firstname=Admin \
-      --admin-lastname=User \
-      --admin-email=admin@your-domain.com \
-      --admin-user=admin \
-      --admin-password=admin123 \
-      --language=en_US \
-      --currency=USD \
-      --timezone=America/Chicago \
-      --use-rewrites=1
+      --base-url="{{ magento_base_url }}" \
+      --db-host="{{ magento_db_host }}" \
+      --db-name="{{ magento_db_name }}" \
+      --db-user="{{ magento_db_user }}" \
+      --db-password="{{ magento_db_password }}" \
+      --admin-firstname="{{ magento_admin_firstname }}" \
+      --admin-lastname="{{ magento_admin_lastname }}" \
+      --admin-email="{{ magento_admin_email }}" \
+      --admin-user="{{ magento_admin_user }}" \
+      --admin-password="{{ magento_admin_password }}" \
+      --language="{{ magento_language }}" \
+      --currency="{{ magento_currency }}" \
+      --timezone="{{ magento_timezone }}" \
+      --use-rewrites="{{ magento_use_rewrites }}"
   args:
-    chdir: /var/www/magento2
-
+    chdir: "{{ magento_install_dir }}"

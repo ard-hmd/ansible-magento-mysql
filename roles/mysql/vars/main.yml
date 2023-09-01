@@ -1,2 +1,13 @@
 ---
 # vars file for mysql
+mysql_server_package: "mysql-server"
+cache_valid_time: 86400
+mysql_service_name: "mysql"
+mysql_dependencies:
+  - "php-mysql"
+  - "python3-pymysql"
+mysql_db_name: "magentodb"
+mysql_unix_socket_path: "/var/run/mysqld/mysqld.sock"
+mysql_user_name: "magentouser"
+mysql_user_password: "{{ vault_mysql_user_password }}"
+mysql_user_privileges: "*.*:ALL"

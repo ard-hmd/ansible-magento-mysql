@@ -1,37 +1,36 @@
----
 # tasks file for elasticsearch
 - name: Download GPG key and save as .asc
   ansible.builtin.get_url:
-    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
-    dest: /tmp/elasticsearch-key.gpg
+    url: "{{ elasticsearch_gpg_url }}"
+    dest: "{{ elasticsearch_gpg_dest }}"
 
 - name: Import GPG key
   ansible.builtin.shell: |
-    gpg --dearmor -o /usr/share/keyrings/elasticsearch-keyring.gpg /tmp/elasticsearch-key.gpg
+    gpg --dearmor -o {{ elasticsearch_gpg_keyring_dest }} {{ elasticsearch_gpg_dest }}
 
 - name: Add repository line to sources.list
   ansible.builtin.lineinfile:
-    path: /etc/apt/sources.list.d/elastic-8.x.list
-    line: 'deb [signed-by=/usr/share/keyrings/elasticsearch-keyring.gpg] https://artifacts.elastic.co/packages/8.x/apt stable main'
+    path: "{{ elasticsearch_repo_path }}"
+    line: "{{ elasticsearch_repo_line }}"
     create: yes
 
 - name: Install elasticsearch
   ansible.builtin.apt:
-    name: elasticsearch
+    name: "{{ elasticsearch_package_name }}"
     update_cache: yes
     force: true
     state: present
 
 - name: Enable service elasticsearch
   ansible.builtin.systemd:
-    name: elasticsearch
+    name: "{{ elasticsearch_service_name }}"
     enabled: true
     state: started
 
 - name: Update elasticsearch configuration
   ansible.builtin.lineinfile:
-    path: /etc/elasticsearch/elasticsearch.yml
+    path: "{{ elasticsearch_config_path }}"
     regexp: 'xpack.security.enable'
-    line: 'xpack.security.enabled: false'
+    line: '{{ elasticsearch_security_line }}'
   notify:
     - Restart elasticsearch
