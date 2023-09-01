@@ -1,13 +1,13 @@
 ---
 # tasks file for elasticsearch
-# - name: Download GPG key and save as .asc
-#   ansible.builtin.get_url:
-#     url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
-#     dest: /tmp/elasticsearch-key.gpg
+- name: Download GPG key and save as .asc
+  ansible.builtin.get_url:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    dest: /tmp/elasticsearch-key.gpg
 
-# - name: Import GPG key
-#   ansible.builtin.shell: |
-#     gpg --dearmor -o /usr/share/keyrings/elasticsearch-keyring.gpg /tmp/elasticsearch-key.gpg
+- name: Import GPG key
+  ansible.builtin.shell: |
+    gpg --dearmor -o /usr/share/keyrings/elasticsearch-keyring.gpg /tmp/elasticsearch-key.gpg
 
 - name: Add repository line to sources.list
   ansible.builtin.lineinfile:

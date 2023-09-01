@@ -25,7 +25,7 @@
 - name: Install Magento
   shell: |
     bin/magento setup:install \
-      --base-url=http://15.236.40.152 \
+      --base-url=http://15.236.18.167 \
       --db-host=localhost \
       --db-name=magentodb \
       --db-user=magentouser \

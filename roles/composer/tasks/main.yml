@@ -1,7 +1,24 @@
 ---
-# tasks file for composer
-- name: Install composer
-  shell: |
-    curl -sS https://getcomposer.org/installer | php
-    mv composer.phar /usr/local/bin/composer
-    chmod +x /usr/local/bin/composer
+- name: Download Composer Installer
+  get_url:
+    url: https://getcomposer.org/installer
+    dest: /tmp/composer-installer
+    mode: 0755
+
+- name: Install Composer using PHP
+  shell: php composer-installer
+  args:
+    chdir: /tmp/
+
+- name: Move Composer File to /user/local/bin
+  shell: mv composer.phar /usr/local/bin/composer
+  args:
+    chdir: /tmp/
+
+- name: Create Symbolic Link
+  file:
+    src: /usr/local/bin/composer
+    dest: /usr/bin/composer
+    owner: root
+    group: root
+    state: link
