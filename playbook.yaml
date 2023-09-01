@@ -3,7 +3,7 @@
   become: yes
   roles:
     - nginx
-    # - mysql
-    # - elasticsearch
-    # - composer
-    # - magento
+    - mysql
+    - elasticsearch
+    - composer
+    - magento
